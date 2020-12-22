@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block css_block %}
+<style>
+  .cat{
+    text-align: center;
+  }
+
+</style>
+{% endblock %}
+{% block body_block %}
+<div class="card my-4">
+  <h2 class="text-center mb-4">Categories</h2>
+  <ul class="list-group cat">
+    {% for cat in cats.all %}
+    <li class="list-group-item"><a href="{% url 'App_Home:catVideo' catId=cat.id %}" class="d-block">{{ cat.name }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}

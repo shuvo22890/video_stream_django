@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block css_block %}
+<style media="screen">
+  .wrap{
+    margin-top: 25px;
+  }
+</style>
+{% endblock %}
+
+{% block body_block %}
+  {% if search %}
+    {% if atleastOne %}
+    <h2 class="my-3">Videos for <strong style="color: #8e44ad">{{ search }}</strong></h2>
+    <div class="row">
+    {% for video in videos.all %}
+    <div class="col-md-4">
+      <div class="card wrap">
+        <iframe width="100%" height="auto" src="{{ video.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        <div class="card-body" style="background: #ddd">
+          <h5 class="card-title">{{ video.name }}</h5>
+        </div>
+
+        <div class="card-footer">
+          {% if user.is_authenticated %}
+          <a href="{% url 'App_Login:view' vidId=video.id %}" class="btn btn-primary btn-sm">View</a>
+          {% else %}
+          <a href="{% url 'App_Login:login' %}" class="btn btn-info btn-sm">Login to give review</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% else %}
+    <div class="card p-5 mt-5 text-center">
+      <h2 class="card-title"><strong>Sorry!</strong> No video found for <span style="color: #8e44ad">{{ search }}</span></h2>
+  </div>
+    {% endif %}
+  {% else %}
+<div class="row">
+  {% for video in videos.all %}
+  <div class="col-md-4">
+    <div class="card wrap">
+      <iframe width="100%" height="auto" src="{{ video.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+      <div class="card-body" style="background: #ddd">
+        <h5 class="card-title">{{ video.name }}</h5>
+      </div>
+
+      <div class="card-footer">
+        {% if user.is_authenticated %}
+        <a href="{% url 'App_Login:view' vidId=video.id %}" class="btn btn-primary btn-sm">View</a>
+        {% else %}
+        <a href="{% url 'App_Login:login' %}" class="btn btn-info btn-sm">Login to give review</a>
+        {% endif %}
+      </div>
+    </div>
+
+
+  </div>
+  {% endfor %}
+</div>
+  {% endif %}
+
+{% endblock %}

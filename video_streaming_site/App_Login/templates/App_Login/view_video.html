@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block css_block %}
+<style media="screen">
+  .wrap{
+    margin: 25px 0;
+  }
+
+  .thum{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #aba3a3;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<div class="card wrap">
+  <iframe width="100%" height="420" src="{{ video.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  <div class="card-body" style="background: #ddd">
+    <h5 class="card-title">{{ video.name }}</h5>
+  </div>
+
+  <div class="card-footer">
+    {% if reviews %}
+    <div class="row">
+        {% for review in reviews.all %}
+        <div class="col-md-3">
+          <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">
+              {% if review.reviewer.profile_pic %}
+              <img class="img-fluid thum mr-2" src="/media/{{review.reviewer.profile_pic}}">
+              {% else %}
+              <img class="img-fluid thum mr-2" src="/media/default.png">
+              {% endif %}
+
+              <strong style="font-size: 18px;"><a href="{% url 'App_Login:user_other' pk=review.reviewer.id %}">{{ review.reviewer.full_name }}</a></strong></div>
+            <div class="card-body text-primary">
+              <p class="card-text">{{ review.review }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+      <h3 class="alert alert-warning">No review in this video.</h3>
+    {% endif %}
+  </div>
+</div>
+
+<hr>
+
+<div class="card wrap">
+  <div class="card-header">
+    <h3 class="card-title">Add a review</h3>
+  </div>
+
+  <div class="card-body">
+    {% if user.profile.full_name %}
+      <form method="POST">
+        {{ form|crispy }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-info btn-sm">Post Review</button>
+      </form>
+    {% else %}
+      <p class="alert alert-warning">Please <a href="{% url 'App_Login:edit_profile' %}">add your full name</a> to give review.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

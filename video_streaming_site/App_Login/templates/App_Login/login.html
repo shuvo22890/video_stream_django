@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="messages mt-2">
+        {% if messages %}
+          {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{message.tags}}"{% endif %} role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="card mt-3">
+        <div class="card-body">
+          <h2 class="card-title">Login Here <strong>{{err}}</strong></h2>
+          {% if err %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> {{err}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endif %}
+          <form method="POST">
+            {{ form|crispy }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-info">Login</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mt-3 pt-3 text-center">
+        <p>Don't have an account <a href="{% url 'App_Login:signup' %}">Signup Here</a></p>
+      </div>
+    </div>
+  </body>
+</html>
